@@ -1,6 +1,19 @@
 import pickle
 import streamlit as st
 import requests
+import os
+import gdown
+
+# Download similarity matrix from Google Drive if it doesn't exist locally
+if not os.path.exists('similarity.pkl'):
+    # ONLY the ID goes here
+    file_id = '1zgg-V56t25ErdzRNOvP11Oe-AxBchhTn' 
+    url = f'https://drive.google.com/uc?id={file_id}'
+    gdown.download(url, 'similarity.pkl', quiet=False)
+
+# Load the models
+movies = pickle.load(open('movie_list.pkl','rb'))
+similarity = pickle.load(open('similarity.pkl','rb'))
 
 def fetch_poster(movie_id):
     url = "https://api.themoviedb.org/3/movie/{}?api_key=c9fa8ba98cc2965a8eb4e3028b8b898c&language=en-US".format(movie_id)
